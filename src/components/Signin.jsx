@@ -1,16 +1,45 @@
 import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Container } from "semantic-ui-react";
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
+import { UserService } from "../services/userService";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
+
+
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
-const Signin = () => (
+const Signin = () => {
+  const [data, setData] = useState({});
+  const navigate = useNavigate()
 
+  const onFinish = (values) => {
+    let userService = new UserService();
+    console.log(values);
+    userService
+      .postUserSignin(values)
+      .then((res) => setData(res.data))
+      .catch((err) => console.log(err));
+      if(data == 200){
+        console.log("Success:", values);
+        navigate("/")
+      }
+      else{
+        console.log(data);
+        console.log("bad request");
+      }
+    
+  };
+  return (
     <Container
-      style={{ display: "flex", justifyContent: "center", alignItems: "center", height:"300px" }}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "300px",
+      }}
     >
       <Form
         name="basic"
@@ -22,7 +51,7 @@ const Signin = () => (
         }}
         style={{
           maxWidth: 600,
-          width: "700px", 
+          width: "700px",
         }}
         initialValues={{
           remember: true,
@@ -56,6 +85,7 @@ const Signin = () => (
         >
           <Input.Password />
         </Form.Item>
+        
 
         <Form.Item
           wrapperCol={{
@@ -69,6 +99,6 @@ const Signin = () => (
         </Form.Item>
       </Form>
     </Container>
-
-);
+  );
+};
 export default Signin;
