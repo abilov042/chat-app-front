@@ -17,6 +17,12 @@ const MenuExampleButtons = () => (
       </Link>
       
     </Menu.Item>
+    <Menu.Item>
+      <Link to={"/getall"}>
+      <Button>GETALL</Button>
+      </Link>
+      
+    </Menu.Item>
   </Menu>
 )
 

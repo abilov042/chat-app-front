@@ -5,32 +5,34 @@ import { UserService } from "../services/userService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
-
-
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 const Signin = () => {
   const [data, setData] = useState({});
-  const navigate = useNavigate()
+  const [status, setStatus] = useState("");
+  const navigate = useNavigate();
 
   const onFinish = (values) => {
     let userService = new UserService();
-    console.log(values);
-    userService
-      .postUserSignin(values)
-      .then((res) => setData(res.data))
-      .catch((err) => console.log(err));
-      if(data == 200){
-        console.log("Success:", values);
-        navigate("/")
-      }
-      else{
-        console.log(data);
-        console.log("bad request");
-      }
     
+    let res = userService.postUserSignin(values);
+
+    res.then(response => {setData(response.data)
+     setStatus(response.status);
+     if (status === 200) {
+      console.log("Success:", values);
+      console.log(data);
+      navigate("/");
+    } else {
+      console.log(data);
+      console.log("Bad request");
+    }
+  
+    }).catch(err => console.log(err))
+
+    
+   
   };
   return (
     <Container
@@ -85,7 +87,6 @@ const Signin = () => {
         >
           <Input.Password />
         </Form.Item>
-        
 
         <Form.Item
           wrapperCol={{
