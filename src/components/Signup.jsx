@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserService } from "../services/userService";
-import { Await } from "react-router-dom";
+
 
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
@@ -21,7 +21,7 @@ const Signup = () => {
   const onFinish = (values) => {
     if (checkPassword(values.password, values.cPassword)) {
       setChckP({ check: false });
-      console.log(values.username);
+     
       let  userService = new UserService();
       let obj = {
         username: values.username,
@@ -34,13 +34,19 @@ const Signup = () => {
         .then((response) => {
           setCheckStatus(response.status);
           setUserRes(response.data); 
+          if(checkStatus === 200){
+            console.log("success", userRes);
+            navigate("/")
+          }
+          else{
+            console.log("bag request");
+          }
         })
         .catch((err) => {
           console.log(err);
         });
       
-        console.log("Success:", values);
-       // navigate("/");
+      
       
       
     } else {
