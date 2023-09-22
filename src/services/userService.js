@@ -1,23 +1,23 @@
 import axios from "axios";
 
-const config = {
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-    'Content-Type': 'application/json'
-  },
+// Özel API URL'si
+const apiUrl = 'http://192.168.0.105:8080/api/';
+
+
+const customApiConfig = {
+  headers:{'Authorization' : 'Bearer ' + localStorage.getItem("jwtToken"),
+    'Content-Type': 'application/json',
+  }
+ 
 };
 
 export class UserService {
-   postUserSignup(values) {
+  async postUserSignup(values) {
     try {
-      const response =  axios.post(
-        "http://localhost:8080/api/auth/signup",
+      const response = await axios.post(
+        apiUrl + "auth/signup",
         values,
-        config,
-        {
-          withCredentials: true
-        }
+        
       );
 
       return response;
@@ -26,15 +26,13 @@ export class UserService {
     }
   }
 
-   postUserSignin(values) {
+   async postUserSignin(values) {
     try {
-      const response =  axios.post(
-        "http://localhost:8080/api/auth/signin",
+      const response = await axios.post(
+         apiUrl+ "auth/signin",
         values,
-        config,
-        {
-          withCredentials: true 
-        }
+       
+       
       );
       
       return response;
@@ -43,7 +41,16 @@ export class UserService {
     }
   }
 
-  getUsers() {
-    return axios.get("http://localhost:8080/api/user/getall", {withCredentials:true} );
+   getUsers() {
+   
+    return  axios.get(apiUrl+ "user/getall",
+    {headers:{'Authorization' : 'Bearer ' + localStorage.getItem("jwtToken"),
+    'Content-Type': 'application/json',
+  }});
+  }
+
+  async getTest(){
+
+    return await axios.get(apiUrl+ "user/getTest",customApiConfig)
   }
 }

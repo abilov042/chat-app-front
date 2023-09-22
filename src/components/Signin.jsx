@@ -21,7 +21,10 @@ const Signin = () => {
       if (response.status == 200) {
        
        console.log(response.data);
-       
+       localStorage.setItem("id", response.data.id)
+       localStorage.setItem("username", response.data.username)
+       localStorage.setItem("jwtToken", response.data.jwtToken)
+       localStorage.setItem("roles", response.data.roles)
        navigate("/");
      } else {
        console.log(response.data);

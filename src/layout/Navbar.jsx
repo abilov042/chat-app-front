@@ -2,7 +2,13 @@ import React from 'react'
 import { Button, Menu } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 
-const MenuExampleButtons = () => (
+
+const MenuExampleButtons = () => {
+
+  
+  
+  return(
+    
   <Menu>
     <Menu.Item>
       <Link to={"/signup"}>
@@ -21,9 +27,15 @@ const MenuExampleButtons = () => (
       <Link to={"/getall"}>
       <Button>GETALL</Button>
       </Link>
-      
+      <Menu.Item>
+        <h1>{""}</h1>
+      </Menu.Item>
     </Menu.Item>
   </Menu>
-)
+  )
+
+}
+  
+
 
 export default MenuExampleButtons
