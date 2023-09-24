@@ -5,17 +5,21 @@ const SocketSetUp = () => {
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const room = 'your_room_name'; // Qoşulmaq istədiyiniz oda adını burada dəyişin
+  const room = 'your_room_name'; // Bağlanmak istediğiniz oda adını burada değiştirin
 
   useEffect(() => {
-    // WebSocket bağlantısını yalnızca bir defa yaratmaq üçün bu əməliyyatı bir dəfə icra edin
+    // WebSocket bağlantısını yalnızca bir kez oluşturun
     if (!socket) {
       const newSocket = io('ws://localhost:8081', {
         query: { room },
       });
 
-      newSocket.on('get_message', (message) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
+      newSocket.on('connect', () => {
+        console.log('WebSocket bağlantısı kuruldu.');
+      });
+
+      newSocket.on('get_message', (receivedMessage) => {
+        setMessages((prevMessages) => [...prevMessages, receivedMessage.message]);
       });
 
       setSocket(newSocket);
@@ -47,7 +51,7 @@ const SocketSetUp = () => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <button onClick={sendMessage}>Göndər</button>
+      <button onClick={sendMessage}>Gönder</button>
     </div>
   );
 };
