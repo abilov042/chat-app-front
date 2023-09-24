@@ -27,9 +27,11 @@ const MenuExampleButtons = () => {
       <Link to={"/getall"}>
       <Button>GETALL</Button>
       </Link>
-      <Menu.Item>
-        <h1>{""}</h1>
-      </Menu.Item>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to={"/"}>
+      <Button>Home</Button>
+      </Link>
     </Menu.Item>
   </Menu>
   )
