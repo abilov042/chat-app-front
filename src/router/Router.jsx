@@ -3,7 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import Signin from "../components/Signin";
 import Signup from "../components/Signup";
 import ChatWindow from "../components/ChatWindow";
-import { Message } from "../components/Message";
+import GetAll from '../components/Getall'
+import Shamil from "../components/Shamil";
+
 
 export default function Router() {
   return (
@@ -12,7 +14,7 @@ export default function Router() {
         <Route index path="/" element={<ChatWindow />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/getall" element={<Message/>}/>
+        <Route path="/getall" element={<Shamil/>}/>
       </Routes>
     </div>
   );
