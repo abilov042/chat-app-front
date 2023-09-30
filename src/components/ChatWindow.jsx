@@ -3,6 +3,7 @@ import { Layout, theme } from 'antd';
 import Stomp from 'stompjs';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useRef } from 'react';
 const { Header, Content, Footer } = Layout;
 
 
@@ -13,8 +14,16 @@ const ChatWindow = () => {
   const [stompClient, setStompClient] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
-
+  const ref = useRef();
+ 
+  
+  
   useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollTop  = ref.current.scrollHeight;
+    }
+
+
     const socket = new WebSocket('ws://192.168.0.105:8080/chat');
     const client = Stomp.over(socket);
     client.connect({}, (frame) => {
@@ -33,7 +42,7 @@ const ChatWindow = () => {
         stompClient.disconnect();
       }
     };
-  }, []);
+  }, [messages]);
 
   const sendMessage = () => {
     if (!messageInput || messageInput.trim() === '') {
@@ -45,7 +54,7 @@ const ChatWindow = () => {
         message: messageInput,
       };
       stompClient.send('/chat', {}, JSON.stringify(data));
-      setMessageInput('');
+     // setMessageInput('');
     }
   };
   return (
@@ -63,10 +72,11 @@ const ChatWindow = () => {
       <Content
         style={{
           padding: '0 50px',
-          overflowY:"scroll",
-          height:"500px",
+          overflowY:"auto",
+          height:"500px", 
           backgroundImage:"url('https://top-fon.com/uploads/posts/2022-09/1663557622_13-top-fon-com-p-fon-vatsap-serii-foto-16.jpg')"
         }}
+        ref={ref}
       >
         
         <Layout
@@ -87,10 +97,10 @@ const ChatWindow = () => {
           <div  className="message-box">
             
         {messages.map((msg, index) => (
-          <div style={{display:"flex", justifyContent:"end"}}>
-            <div style={{ backgroundColor:"green", borderRadius:"10px", padding:"5px" }}>
-              <h3 style={{color:"white", padding:"10px"}} key={index}>{msg}</h3>
-          </div>
+          <div style={{display:"flex", justifyContent:"end", padding:"2px"} }>
+            <div style={{ backgroundColor:"#e7ffdb", borderRadius:"10px", padding:"3px" }}>
+              <p style={{color:"black", padding:"10px"}} key={index}>{msg}</p>
+            </div>
           </div>
           
         ))}
@@ -98,19 +108,15 @@ const ChatWindow = () => {
         </Layout>
        
       </Content>
-      <Footer
-        style={{
-          textAlign: 'center',
-        }}
-      >
+      <Footer>
          <input
-         style={{width:"80%"}}
+         style={{width:"80%", height:"35px", borderRadius:"8px"}}
         type="text"
         placeholder="Mesajınızı yazın"
         value={messageInput}
          onChange={(e) => setMessageInput(e.target.value)}
       />
-      <button onClick={sendMessage}>Gönder</button>
+      <button style={{padding:"35" , height:"35px", backgroundColor:"#2185d0", color:"white", borderRadius:"8px"}} onClick={sendMessage}>Gönder</button>
       </Footer>
     </Layout>
 
