@@ -11,10 +11,10 @@ export default function Router() {
   return (
     <div>
       <Routes>
-        <Route index path="/" element={<ChatWindow />} />
+        <Route index path="/" element={<Signin />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/getall" element={<Shamil/>}/>
+        <Route path="/chatRoom" element={<ChatWindow/>}/>
       </Routes>
     </div>
   );

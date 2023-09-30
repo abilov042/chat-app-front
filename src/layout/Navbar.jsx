@@ -24,8 +24,8 @@ const MenuExampleButtons = () => {
       
     </Menu.Item>
     <Menu.Item>
-      <Link to={"/getall"}>
-      <Button>GETALL</Button>
+      <Link to={"/chatRoom"}>
+      <Button>ChatRoom</Button>
       </Link>
     </Menu.Item>
     <Menu.Item>
