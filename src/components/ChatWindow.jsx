@@ -14,6 +14,7 @@ const ChatWindow = () => {
   const [stompClient, setStompClient] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
+  const [receivedDataS, setReceivedDataS] = useState("")
   const ref = useRef();
  
   
@@ -33,7 +34,9 @@ const ChatWindow = () => {
       client.subscribe('/topic/message', (message) => {
         
         const receivedData = JSON.parse(message.body);
+        setReceivedDataS(receivedData)
         setMessages((prevMessages) => [...prevMessages, receivedData.message]);
+        
       });
     });
 
@@ -42,7 +45,7 @@ const ChatWindow = () => {
         stompClient.disconnect();
       }
     };
-  }, [messages]);
+  }, [receivedDataS]);
 
   const sendMessage = () => {
     if (!messageInput || messageInput.trim() === '') {
@@ -54,7 +57,7 @@ const ChatWindow = () => {
         message: messageInput,
       };
       stompClient.send('/chat', {}, JSON.stringify(data));
-     // setMessageInput('');
+      setMessageInput('');
     }
   };
   return (
@@ -110,13 +113,14 @@ const ChatWindow = () => {
       </Content>
       <Footer>
          <input
-         style={{width:"80%", height:"35px", borderRadius:"8px"}}
+         style={{width:"75%", height:"35px", borderRadius:"8px", border:"none"}}
         type="text"
         placeholder="Mesajınızı yazın"
         value={messageInput}
          onChange={(e) => setMessageInput(e.target.value)}
       />
-      <button style={{padding:"35" , height:"35px", backgroundColor:"#2185d0", color:"white", borderRadius:"8px"}} onClick={sendMessage}>Gönder</button>
+      
+      <button style={{padding:"35" , height:"35px",backgroundColor:messageInput?"#6f8ff7":"#8ea6f5" , border:"none", color:"white",marginLeft:"8px" , borderRadius:"15px"}} disabled={!messageInput} onClick={sendMessage}>Gönder</button>
       </Footer>
     </Layout>
 
