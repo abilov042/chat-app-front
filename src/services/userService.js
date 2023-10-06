@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// Özel API URL'si
+
 const apiUrl = 'http://localhost:8080/api/';
 
 

@@ -4,6 +4,7 @@ import Stomp from 'stompjs';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import { MessageService } from '../services/messageService';
 const { Header, Content, Footer } = Layout;
 
 
@@ -14,16 +15,23 @@ const ChatWindow = () => {
   const [stompClient, setStompClient] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
-  const [receivedDataS, setReceivedDataS] = useState("")
   const ref = useRef();
  
-  
+  useEffect(()=>{
+    let messageService = new MessageService()
+    let roomid = localStorage.getItem("roomId")
+    console.log('Salam');
+     messageService.getMessage(parseInt(roomid)).then((res)=> {
+      setMessages(res.data.data)
+      console.log("salammm " + res.data);
+    }).catch(e => {
+      console.log(e);
+    })
+  },[])
   
   useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollTop  = ref.current.scrollHeight;
-    }
-
+    
+    
 
     const socket = new WebSocket('ws://192.168.0.105:8080/chat');
     const client = Stomp.over(socket);
@@ -32,32 +40,46 @@ const ChatWindow = () => {
       setStompClient(client);
 
       client.subscribe('/topic/message', (message) => {
-        
         const receivedData = JSON.parse(message.body);
-        setReceivedDataS(receivedData)
+        
         setMessages((prevMessages) => [...prevMessages, receivedData.message]);
         
       });
     });
-
+     
     return () => {
       if (stompClient) {
         stompClient.disconnect();
       }
     };
-  }, [receivedDataS]);
+  }, []);
+
+  useEffect(()=>{
+    if (ref.current) {
+      ref.current.scrollTop  = ref.current.scrollHeight;
+    }
+  },[messages])
 
   const sendMessage = () => {
     if (!messageInput || messageInput.trim() === '') {
+      
       return; // Boş mesaj gönderme işlemini engelle
     }
 
     if (stompClient) {
+      
       const data = {
         message: messageInput,
-      };
+        room: {
+          id: localStorage.getItem("roomId"),
+        },
+        user: {
+          id: localStorage.getItem('id') 
+        }
+      }
       stompClient.send('/chat', {}, JSON.stringify(data));
       setMessageInput('');
+     
     }
   };
   return (
@@ -70,14 +92,18 @@ const ChatWindow = () => {
           alignItems: 'center',
         }}
       >
+        <div style={{display:"flex", justifyContent:"center"}}>
+          <h3  style={{color:"white"}}>{localStorage.getItem("roomName")}</h3>
+        </div>
       
       </Header>
       <Content
         style={{
           padding: '0 50px',
           overflowY:"auto",
-          height:"500px", 
-          backgroundImage:"url('https://top-fon.com/uploads/posts/2022-09/1663557622_13-top-fon-com-p-fon-vatsap-serii-foto-16.jpg')"
+          scrollBehavior: "smooth",
+          height:"500px", //https://top-fon.com/uploads/posts/2022-09/1663557622_13-top-fon-com-p-fon-vatsap-serii-foto-16.jpg
+          backgroundImage:"url('chatAppBackGroundImg.jpg')"
         }}
         ref={ref}
       >
