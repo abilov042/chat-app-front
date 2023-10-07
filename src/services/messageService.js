@@ -2,6 +2,7 @@ import axios from "axios";
 
 export class MessageService {
   getMessage(roomId) {
+    console.log(roomId);
     return axios.post(
       "http://localhost:8080/api/messages/getByRoomId?id=" + roomId,
       {

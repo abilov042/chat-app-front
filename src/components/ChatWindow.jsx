@@ -20,10 +20,11 @@ const ChatWindow = () => {
   useEffect(()=>{
     let messageService = new MessageService()
     let roomid = localStorage.getItem("roomId")
+    console.log(roomid)
     console.log('Salam');
-     messageService.getMessage(parseInt(roomid)).then((res)=> {
+     messageService.getMessage(roomid).then((res)=> {
       setMessages(res.data.data)
-      console.log("salammm " + res.data);
+      console.log("salammm " + res.data.data);
     }).catch(e => {
       console.log(e);
     })
@@ -41,8 +42,8 @@ const ChatWindow = () => {
 
       client.subscribe('/topic/message', (message) => {
         const receivedData = JSON.parse(message.body);
-        
-        setMessages((prevMessages) => [...prevMessages, receivedData.message]);
+        console.log(receivedData.message);
+        setMessages((prevMessages) => [...prevMessages, receivedData]);
         
       });
     });
@@ -72,9 +73,11 @@ const ChatWindow = () => {
         message: messageInput,
         room: {
           id: localStorage.getItem("roomId"),
+          roomName: localStorage.getItem('roomName')
         },
         user: {
-          id: localStorage.getItem('id') 
+          id: localStorage.getItem('id'),
+          username: localStorage.getItem('username')
         }
       }
       stompClient.send('/chat', {}, JSON.stringify(data));
@@ -126,12 +129,19 @@ const ChatWindow = () => {
           <div  className="message-box">
             
         {messages.map((msg, index) => (
+          msg.user.id== localStorage.getItem('id')?(
           <div style={{display:"flex", justifyContent:"end", padding:"2px"} }>
             <div style={{ backgroundColor:"#e7ffdb", borderRadius:"10px", padding:"3px" }}>
-              <p style={{color:"black", padding:"10px"}} key={index}>{msg}</p>
+              <p style={{color:"black", padding:"10px"}} key={index}>{msg.message}</p>
             </div>
           </div>
-          
+          ):(
+          <div style={{display:"flex", justifyContent:"start", padding:"2px"} }>
+            <div style={{ backgroundColor:"#e7ffdb", borderRadius:"10px", padding:"3px" }}>
+              <p style={{color:"black", padding:"10px"}} key={index}>{msg.message}</p>
+            </div>
+          </div>
+          )
         ))}
       </div>
         </Layout>
