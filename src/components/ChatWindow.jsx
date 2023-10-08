@@ -15,7 +15,23 @@ const ChatWindow = () => {
   const [stompClient, setStompClient] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
+  const [randNumberForColor, setRandomNumberForColor] = useState(0);
   const ref = useRef();
+
+  const colorCodes = [
+    "#FF5733",   // Açık Kırmızı
+    "#33FF57",   // Açık Yeşil
+    "#3385FF",   // Açık Mavi
+    "#ff0000",   // Sarı
+    "#FFA500",   // Turuncu
+    "#9B30FF",   // Orta Mor
+    "#FFB6C1",   // Açık Pembe
+    "#40E0D0",   // Turkuaz
+    "#0000ff",   // Altın Rengi
+    "#808080"    // Gri
+];
+
+
  
   useEffect(()=>{
     let messageService = new MessageService()
@@ -28,11 +44,11 @@ const ChatWindow = () => {
     }).catch(e => {
       console.log(e);
     })
+
+    setRandomNumberForColor( Math.floor(Math.random() * 100));
   },[])
   
   useEffect(() => {
-    
-    
 
     const socket = new WebSocket('ws://192.168.0.105:8080/chat');
     const client = Stomp.over(socket);
@@ -132,13 +148,26 @@ const ChatWindow = () => {
           msg.user.id== localStorage.getItem('id')?(
           <div style={{display:"flex", justifyContent:"end", padding:"2px"} }>
             <div style={{ backgroundColor:"#e7ffdb", borderRadius:"10px", padding:"3px" }}>
-              <p style={{color:"black", padding:"10px"}} key={index}>{msg.message}</p>
+            <div style={{padding:"4px", display:"flex", flexDirection:"column", justifyContent:"end"}}>
+              <div style={{display:"flex", justifyContent:"end"}}>
+                <p style={{ fontSize:"13px",color:colorCodes[(msg.user.id * randNumberForColor)%9], margin:"0px", }}>{msg.user.username}</p>
+              </div>
+                 
+                 <p style={{color:"black"}} key={index}>{msg.message}</p>
+              </div>
             </div>
           </div>
           ):(
-          <div style={{display:"flex", justifyContent:"start", padding:"2px"} }>
+          <div style={{display:"flex", justifyContent:"start", padding:"3px"} }>
             <div style={{ backgroundColor:"#e7ffdb", borderRadius:"10px", padding:"3px" }}>
-              <p style={{color:"black", padding:"10px"}} key={index}>{msg.message}</p>
+              <div style={{padding:"4px", display:"flex", flexDirection:"column", justifyContent:"start"}}>
+              <div style={{display:"flex", justifyContent:"start"}}>
+                <p style={{ fontSize:"13px",color:colorCodes[(msg.user.id * randNumberForColor)%9], margin:"0px", }}>{msg.user.username}</p>
+              </div>
+                 <p style={{color:"black"}} key={index}>{msg.message}</p>
+              </div>
+           
+              
             </div>
           </div>
           )
