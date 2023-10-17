@@ -14,6 +14,7 @@ export default function Router() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/chatRoom" element={<ChatWindow/>}/>
+        <Route path="/verification"/>
       </Routes>
     </div>
   );

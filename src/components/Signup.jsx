@@ -3,6 +3,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserService } from "../services/userService";
+import { MailMessageSenderService } from "../services/mailMessageSenderService";
 
 
 const onFinishFailed = (errorInfo) => {
@@ -28,7 +29,8 @@ const Signup = () => {
         email: values.email,
         password: values.password,
       };
-     
+      let mailMessageSenderService = new MailMessageSenderService()
+      mailMessageSenderService.sendMessage(values.email)
        userService 
         .postUserSignup(obj)
         .then((response) => {
@@ -36,7 +38,7 @@ const Signup = () => {
           setUserRes(response.data); 
           if(checkStatus === 200){
             console.log("success", userRes);
-            navigate("/")
+            navigate("/verification")
           }
           else{
             console.log("bag request");
@@ -47,11 +49,14 @@ const Signup = () => {
         });
       
       
+
       
       
     } else {
       setChckP({ check: true, checkMassage: "Password not same" });
     }
+
+
   };
 
   return (

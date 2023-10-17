@@ -31,10 +31,13 @@ const ChatRoomRegister = () => {
    }
    
   return (
-    <div>
-      <input onChange={(e) => onChangeRoomName(e.target.value)} type="text" />
-      <button onClick={()=> onClickRoom()}>join room</button>
+    <div >
+     <div style={{ height:"500px",display:"flex", justifyContent:"center", alignItems:"center"}}>
+     <input placeholder='Enter room name' style={{width:"300px", height:"30px", borderRadius:"10px"}} onChange={(e) => onChangeRoomName(e.target.value)} type="text" />
+      <button style={{backgroundColor:"#2185d0", color:"white", border:"none", width:"80px", height:"30px", borderRadius:"10px"}} onClick={()=> onClickRoom()}>Send</button>
       {roomResponse?<p>Room finded {roomResponse.roomName}</p>:null}
+     </div>
+      
     </div>
   )
 }
