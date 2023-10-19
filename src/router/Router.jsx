@@ -4,6 +4,7 @@ import Signin from "../components/Signin";
 import Signup from "../components/Signup";
 import ChatWindow from "../components/ChatWindow";
 import ChatRoomRegister from "../components/ChatRoomRegister";
+import Verification from "../components/Verification";
 
 
 export default function Router() {
@@ -14,7 +15,7 @@ export default function Router() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/chatRoom" element={<ChatWindow/>}/>
-        <Route path="/verification"/>
+        <Route path="/verification" element={<Verification/>}/>
       </Routes>
     </div>
   );

@@ -14,7 +14,6 @@ const checkPassword = (password, cPassword) => {
 };
 const Signup = () => {
   const [checkP, setChckP] = useState({});
-  const [checkStatus, setCheckStatus] = useState("");
   const [userRes, setUserRes] = useState("");
 
   const navigate = useNavigate();
@@ -29,16 +28,17 @@ const Signup = () => {
         email: values.email,
         password: values.password,
       };
-      let mailMessageSenderService = new MailMessageSenderService()
-      mailMessageSenderService.sendMessage(values.email)
+      
        userService 
         .postUserSignup(obj)
         .then((response) => {
-          setCheckStatus(response.status);
+          
           setUserRes(response.data); 
-          if(checkStatus === 200){
+          if(response.status == 200){
             console.log("success", userRes);
             navigate("/verification")
+            let mailMessageSenderService = new MailMessageSenderService()
+            mailMessageSenderService.sendMessage(values.email).then((res) => localStorage.setItem("id",res.data.data))
           }
           else{
             console.log("bag request");
