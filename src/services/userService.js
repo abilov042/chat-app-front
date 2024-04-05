@@ -1,7 +1,8 @@
 import axios from "axios";
+import { DOMAIN } from "../static/hostname";
 
 
-const apiUrl = 'http://localhost:8080/api/';
+const apiUrl = DOMAIN+'/api/';
 
 
 const customApiConfig = {
