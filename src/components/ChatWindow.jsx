@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { MessageService } from '../services/messageService';
+import { URL_SOCKET } from '../static/hostname'
 const { Header, Content, Footer } = Layout;
 
 
@@ -36,13 +37,10 @@ const ChatWindow = () => {
   useEffect(()=>{
     let messageService = new MessageService()
     let roomid = localStorage.getItem("roomId")
-    console.log(roomid)
-    console.log('Salam');
      messageService.getMessage(roomid).then((res)=> {
       setMessages(res.data.data)
-      console.log("salammm " + res.data.data);
     }).catch(e => {
-      console.log(e);
+      console.error(e);
     })
 
     setRandomNumberForColor( Math.floor(Math.random() * 100));
@@ -50,7 +48,7 @@ const ChatWindow = () => {
   
   useEffect(() => {
 
-    const socket = new WebSocket('ws://192.168.0.105:8080/chat');
+    const socket = new WebSocket(URL_SOCKET +'/chat');
     const client = Stomp.over(socket);
     client.connect({}, (frame) => {
       console.log('STOMP bağlantısı başarıyla açıldı.');
@@ -58,7 +56,7 @@ const ChatWindow = () => {
 
       client.subscribe('/topic/message', (message) => {
         const receivedData = JSON.parse(message.body);
-        console.log(receivedData.message);
+
         setMessages((prevMessages) => [...prevMessages, receivedData]);
         
       });

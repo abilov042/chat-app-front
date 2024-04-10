@@ -7,7 +7,7 @@ const ChatApp = () => {
   const [messageInput, setMessageInput] = useState('');
 
   useEffect(() => {
-    const socket = new WebSocket('ws://192.168.0.105:8080/chat');
+    const socket = new WebSocket('ws://localhost:8080/chat');
     const client = Stomp.over(socket);
     client.connect({}, (frame) => {
       console.log('STOMP bağlantısı başarıyla açıldı.');

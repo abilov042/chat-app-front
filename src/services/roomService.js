@@ -1,11 +1,11 @@
 import axios from "axios";
-import { DOMAIN } from "../static/hostname";
+import { URL } from "../static/hostname";
 
 export class RoomService {
 
     postRoom(roomName){
 
-        return axios.post(DOMAIN+'/api/room/check?roomName='+roomName)
+        return axios.post(URL+'/api/room/check?roomName='+roomName)
     }
     
 

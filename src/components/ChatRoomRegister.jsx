@@ -11,16 +11,16 @@ const ChatRoomRegister = () => {
    let onClickRoom = () => {
       let roomService = new RoomService()
       roomService.postRoom(roomName).then((res)=> {
+        
         setRoomResponse(res.data.data)
         localStorage.setItem("roomName",res.data.data.roomName)
         localStorage.setItem("roomId", res.data.data.id)
         
         if(res.status===200){
           setTimeout(() => navigate('/chatRoom'), 2000)
-          
         }
       }).catch((e)=> {
-        console.log(e)
+        console.error(e)
       })
       
    }

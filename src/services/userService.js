@@ -1,8 +1,8 @@
 import axios from "axios";
-import { DOMAIN } from "../static/hostname";
+import { URL } from "../static/hostname";
 
 
-const apiUrl = DOMAIN+'/api/';
+const apiUrl = URL+'/api/';
 
 
 const customApiConfig = {
@@ -18,7 +18,6 @@ export class UserService {
       const response = await axios.post(
         apiUrl + "auth/signup",
         values,
-        
       );
 
       return response;
