@@ -48,7 +48,7 @@ const ChatWindow = () => {
   
   useEffect(() => {
 
-    const socket = new WebSocket(URL_SOCKET +'/api/chat');
+    const socket = new WebSocket(URL_SOCKET +'/chat');
     const client = Stomp.over(socket);
     client.connect({}, (frame) => {
       console.log('STOMP bağlantısı başarıyla açıldı.');
